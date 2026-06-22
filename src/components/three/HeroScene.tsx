@@ -1,48 +1,38 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, ContactShadows } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { Float, ContactShadows, useTexture } from "@react-three/drei";
+import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
 
-/** Central air-dried slab: an organic, slowly turning dark cut. */
+/** Central floating cut: the real Geelvet biltong photo, gently hovering. */
 function Slab() {
   const group = useRef<THREE.Group>(null);
+  const texture = useTexture("/products/geelvet-biltong-floating.png");
+  texture.colorSpace = THREE.SRGBColorSpace;
 
   useFrame((state) => {
     if (!group.current) return;
     const t = state.clock.elapsedTime;
-    group.current.rotation.y = t * 0.25;
-    // gentle pointer parallax
+    // gentle sway so the photo keeps facing the viewer, plus the same parallax
+    group.current.rotation.y = Math.sin(t * 0.4) * 0.16;
     const { x, y } = state.pointer;
-    group.current.rotation.x += (y * 0.25 - group.current.rotation.x) * 0.04;
+    group.current.rotation.x += (y * 0.2 - group.current.rotation.x) * 0.04;
     group.current.position.x += (x * 0.4 - group.current.position.x) * 0.04;
   });
 
   return (
     <group ref={group}>
       <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.8}>
-        {/* main slab */}
-        <mesh castShadow rotation={[0.3, 0, 0.15]}>
-          <boxGeometry args={[2.6, 1.1, 0.9, 64, 32, 32]} />
-          <MeshDistortMaterial
-            color="#5C1A16"
-            roughness={0.62}
-            metalness={0.1}
-            distort={0.32}
-            speed={1.1}
-            emissive="#2E0F0C"
-            emissiveIntensity={0.35}
-          />
-        </mesh>
-        {/* lighter cut-face accent */}
-        <mesh position={[0, 0, 0.46]} rotation={[0.3, 0, 0.15]}>
-          <boxGeometry args={[2.2, 0.7, 0.02]} />
+        <mesh castShadow>
+          <planeGeometry args={[3.6, 3.6]} />
           <meshStandardMaterial
-            color="#7A241D"
-            roughness={0.5}
-            emissive="#431311"
-            emissiveIntensity={0.2}
+            map={texture}
+            transparent
+            alphaTest={0.5}
+            roughness={0.7}
+            metalness={0}
+            side={THREE.DoubleSide}
           />
         </mesh>
       </Float>
@@ -128,7 +118,9 @@ export default function HeroScene() {
         color="#D6A24A"
       />
 
-      <Slab />
+      <Suspense fallback={null}>
+        <Slab />
+      </Suspense>
       <Spices />
 
       <ContactShadows

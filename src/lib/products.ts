@@ -13,6 +13,8 @@ export interface Product {
   featured?: boolean;
   /** hue pair used by the procedural product visual */
   tone: [string, string];
+  /** optional real product photo (in /public); falls back to the procedural visual */
+  image?: string;
 }
 
 export const CATEGORIES: Category[] = ["Biltong", "Droëwors", "Gifting"];
@@ -20,16 +22,17 @@ export const CATEGORIES: Category[] = ["Biltong", "Droëwors", "Gifting"];
 export const PRODUCTS: Product[] = [
   {
     id: "p01",
-    slug: "beef-biltong",
-    name: "Beef Biltong",
+    slug: "geelvet-biltong",
+    name: "Geelvet Biltong",
     category: "Biltong",
     price: 390,
     weight: "per kg",
-    blurb: "Our flagship cut. Grass-fed Waterberg beef, coriander, rock salt and a whisper of vinegar, air-dried slow.",
+    blurb: "Our flagship cut. Grass-fed Waterberg beef with its signature yellow fat, coriander, rock salt and a whisper of vinegar, air-dried slow.",
     spice: 0,
     tags: ["bestseller", "grass-fed"],
     featured: true,
     tone: ["#7A241D", "#431311"],
+    image: "/products/geelvet-biltong.png",
   },
   {
     id: "p02",

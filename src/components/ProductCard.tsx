@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Flame, Plus } from "lucide-react";
 import { Product, formatZAR } from "@/lib/products";
@@ -30,8 +31,18 @@ export default function ProductCard({ product }: { product: Product }) {
       className="group relative flex flex-col overflow-hidden rounded-3xl border border-bone/10 bg-espresso-50"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
-        <div className="h-full w-full transition-transform duration-700 group-hover:scale-105">
-          <ProductVisual product={product} className="h-full w-full" />
+        <div className="relative h-full w-full transition-transform duration-700 group-hover:scale-105">
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <ProductVisual product={product} className="h-full w-full" />
+          )}
         </div>
         {product.tags.includes("bestseller") && (
           <span className="absolute left-4 top-4 rounded-full bg-coriander px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-espresso">
