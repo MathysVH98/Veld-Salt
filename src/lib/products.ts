@@ -46,6 +46,7 @@ export const PRODUCTS: Product[] = [
     tags: ["bestseller"],
     featured: true,
     tone: ["#7A3A1D", "#3A1A0E"],
+    image: "/products/beef-droewors.jpg",
   },
   {
     id: "p03",
@@ -59,6 +60,7 @@ export const PRODUCTS: Product[] = [
     tags: ["wild"],
     featured: true,
     tone: ["#5A3A28", "#241410"],
+    image: "/products/game-biltong.jpg",
   },
   {
     id: "p04",
@@ -72,6 +74,7 @@ export const PRODUCTS: Product[] = [
     tags: ["wild"],
     featured: true,
     tone: ["#6A4A2E", "#2E1E10"],
+    image: "/products/game-droewors.png",
   },
   {
     id: "p05",
