@@ -88,6 +88,7 @@ export const PRODUCTS: Product[] = [
     tags: ["gift", "bestseller"],
     featured: true,
     tone: ["#5C1A16", "#15110E"],
+    image: "/products/gift-hamper.webp",
   },
   {
     id: "p06",
@@ -101,6 +102,7 @@ export const PRODUCTS: Product[] = [
     tags: ["gift", "wild"],
     featured: true,
     tone: ["#4A3A28", "#15110E"],
+    image: "/products/gift-hamper.webp",
   },
 ];
 
