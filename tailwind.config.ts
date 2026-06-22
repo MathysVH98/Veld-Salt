@@ -41,14 +41,6 @@ const config: Config = {
         ultra: "0.32em",
       },
       keyframes: {
-        "grain": {
-          "0%,100%": { transform: "translate(0,0)" },
-          "10%": { transform: "translate(-5%,-5%)" },
-          "30%": { transform: "translate(3%,-8%)" },
-          "50%": { transform: "translate(-4%,6%)" },
-          "70%": { transform: "translate(6%,4%)" },
-          "90%": { transform: "translate(-2%,3%)" },
-        },
         "marquee": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
@@ -58,7 +50,6 @@ const config: Config = {
         },
       },
       animation: {
-        grain: "grain 8s steps(10) infinite",
         marquee: "marquee 30s linear infinite",
       },
     },

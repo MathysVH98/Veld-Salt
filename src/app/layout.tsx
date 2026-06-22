@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import AmbientVeld from "@/components/AmbientVeld";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -22,7 +23,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Veld & Salt | Air-dried Biltong from the Waterberg",
   description:
-    "Premium South African biltong, droëwors and chilli bites. Hand-cut, slow air-dried, sourced from a single farm in the Waterberg region of Limpopo.",
+    "Premium South African biltong and droëwors, beef and game. Hand-cut, slow air-dried, sourced from a single farm in the Waterberg region of Limpopo.",
   keywords: [
     "biltong",
     "droewors",
@@ -45,7 +46,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${manrope.variable}`}>
-      <body className="grain bg-espresso text-bone">
+      <body className="bg-espresso text-bone">
+        <AmbientVeld />
         <SmoothScroll>
           <Navbar />
           <main>{children}</main>
