@@ -6,6 +6,7 @@ import { Star, Plus } from "lucide-react";
 import { Product, formatZAR } from "@/lib/products";
 import { waLink } from "@/lib/utils";
 import ProductVisual from "./ProductVisual";
+import { Cow, Kudu } from "./icons/Animals";
 
 function StarRating() {
   return (
@@ -54,6 +55,15 @@ export default function ProductCard({ product }: { product: Product }) {
           product.tags.includes("new")) && (
           <span className="absolute right-4 top-4 rounded-full bg-ember px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-bone">
             {product.tags.includes("new") ? "New" : "Limited"}
+          </span>
+        )}
+        {product.icon && (
+          <span
+            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-coriander/40 bg-espresso/70 text-coriander backdrop-blur"
+            title={product.icon === "cow" ? "Beef" : "Game"}
+            aria-label={product.icon === "cow" ? "Beef" : "Game"}
+          >
+            {product.icon === "cow" ? <Cow size={24} /> : <Kudu size={24} />}
           </span>
         )}
       </div>

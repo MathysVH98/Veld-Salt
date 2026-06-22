@@ -15,6 +15,8 @@ export interface Product {
   tone: [string, string];
   /** optional real product photo (in /public); falls back to the procedural visual */
   image?: string;
+  /** optional animal badge shown on the card */
+  icon?: "cow" | "kudu";
 }
 
 export const CATEGORIES: Category[] = ["Biltong", "Droëwors", "Gifting"];
@@ -89,6 +91,7 @@ export const PRODUCTS: Product[] = [
     featured: true,
     tone: ["#5C1A16", "#15110E"],
     image: "/products/gift-hamper.webp",
+    icon: "cow",
   },
   {
     id: "p06",
@@ -103,6 +106,7 @@ export const PRODUCTS: Product[] = [
     featured: true,
     tone: ["#4A3A28", "#15110E"],
     image: "/products/gift-hamper.webp",
+    icon: "kudu",
   },
 ];
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, Mail, MapPin, Clock, Send } from "lucide-react";
 import { BRAND, waLink } from "@/lib/utils";
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS, formatZAR } from "@/lib/products";
 import Reveal from "@/components/Reveal";
 
 export default function ContactPage() {
@@ -71,8 +71,11 @@ export default function ContactPage() {
                   >
                     <option value="">Choose a cut...</option>
                     {PRODUCTS.map((p) => (
-                      <option key={p.id} value={`${p.name} (${p.weight})`}>
-                        {p.name} · {p.weight}
+                      <option
+                        key={p.id}
+                        value={`${p.name} (${p.weight}) - ${formatZAR(p.price)}`}
+                      >
+                        {p.name} · {p.weight} · {formatZAR(p.price)}
                       </option>
                     ))}
                   </select>
