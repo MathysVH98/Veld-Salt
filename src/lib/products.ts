@@ -60,7 +60,7 @@ export const PRODUCTS: Product[] = [
     tags: ["wild"],
     featured: true,
     tone: ["#5A3A28", "#241410"],
-    image: "/products/game-biltong.jpg",
+    image: "/products/game-biltong.webp",
   },
   {
     id: "p04",
