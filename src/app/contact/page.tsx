@@ -1,25 +1,62 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, Mail, MapPin, Clock, Send } from "lucide-react";
+import {
+  MessageCircle,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  Plus,
+  Minus,
+  Trash2,
+} from "lucide-react";
 import { BRAND, waLink } from "@/lib/utils";
-import { PRODUCTS, formatZAR } from "@/lib/products";
+import {
+  PRODUCTS,
+  formatZAR,
+  quantityOptions,
+  defaultOption,
+} from "@/lib/products";
+import {
+  useCart,
+  resolveLine,
+  buildOrderMessage,
+} from "@/components/cart/CartContext";
 import Reveal from "@/components/Reveal";
 
 export default function ContactPage() {
+  const { items, add, remove, setCount, clear, totalPrice } = useCart();
+
   const [name, setName] = useState("");
-  const [product, setProduct] = useState("");
-  const [qty, setQty] = useState("");
   const [note, setNote] = useState("");
 
-  const message = `Hi Plaas Gedrag!%0A%0AName: ${name || "(your name)"}%0AProduct: ${
-    product || "(what you'd like)"
-  }%0AQuantity: ${qty || "(how much)"}%0A%0A${note}`;
+  // add-a-product builder
+  const [pid, setPid] = useState(PRODUCTS[0].id);
+  const [opt, setOpt] = useState(defaultOption(PRODUCTS[0]).label);
+  const [count, setBuilderCount] = useState(1);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const msg = `Hi Plaas Gedrag!\n\nName: ${name}\nProduct: ${product}\nQuantity: ${qty}\n\n${note}`;
-    window.open(waLink(msg), "_blank", "noopener,noreferrer");
+  const selected = PRODUCTS.find((p) => p.id === pid) ?? PRODUCTS[0];
+  const opts = quantityOptions(selected);
+
+  const onPickProduct = (id: string) => {
+    setPid(id);
+    const p = PRODUCTS.find((x) => x.id === id);
+    if (p) setOpt(defaultOption(p).label);
+  };
+
+  const addToOrder = () => {
+    add(pid, opt, count);
+    setBuilderCount(1);
+  };
+
+  const send = () => {
+    if (!items.length) return;
+    window.open(
+      waLink(buildOrderMessage(items, name, note)),
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -39,20 +76,179 @@ export default function ContactPage() {
         </Reveal>
 
         <div className="mt-16 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* form */}
+          {/* order builder */}
           <Reveal>
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-3xl border border-bone/10 bg-espresso-50 p-8 md:p-10"
-            >
+            <div className="rounded-3xl border border-bone/10 bg-espresso-50 p-8 md:p-10">
               <h2 className="font-display text-3xl text-bone">
                 Build your order
               </h2>
               <p className="mt-2 text-sm text-bone/55">
-                Fill this in and we&apos;ll open WhatsApp with your order ready to
-                send.
+                Add what you would like below, then send it all to us on
+                WhatsApp in one go.
               </p>
 
+              {/* add a product */}
+              <div className="mt-8 rounded-2xl border border-bone/10 bg-espresso p-5">
+                <Field label="Which product?">
+                  <select
+                    value={pid}
+                    onChange={(e) => onPickProduct(e.target.value)}
+                    className="input"
+                  >
+                    {PRODUCTS.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} · {formatZAR(p.price)} {p.weight}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                  <Field label="How much?">
+                    <select
+                      value={opt}
+                      onChange={(e) => setOpt(e.target.value)}
+                      className="input"
+                    >
+                      {opts.map((o) => (
+                        <option key={o.label} value={o.label}>
+                          {o.label} · {formatZAR(selected.price * o.mult)}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+
+                  <Field label="How many?">
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setBuilderCount((c) => Math.max(1, c - 1))}
+                        aria-label="Decrease"
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-bone/15 text-bone/70 transition-colors hover:border-coriander hover:text-coriander"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="min-w-8 text-center font-display text-2xl text-bone">
+                        {count}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setBuilderCount((c) => c + 1)}
+                        aria-label="Increase"
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-bone/15 text-bone/70 transition-colors hover:border-coriander hover:text-coriander"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  </Field>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={addToOrder}
+                  className="btn-ghost mt-6 w-full"
+                >
+                  <Plus size={18} />
+                  Add to order
+                </button>
+              </div>
+
+              {/* current order */}
+              <div className="mt-8">
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="text-xs font-semibold uppercase tracking-widest text-bone/50">
+                    Your order
+                  </h3>
+                  {items.length > 0 && (
+                    <button
+                      onClick={clear}
+                      className="text-xs uppercase tracking-widest text-bone/40 transition-colors hover:text-ember"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+
+                {items.length === 0 ? (
+                  <p className="rounded-2xl border border-dashed border-bone/15 px-5 py-8 text-center text-sm text-bone/45">
+                    No items yet. Add a product above to start your order.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {items.map((item) => {
+                      const line = resolveLine(item);
+                      if (!line) return null;
+                      return (
+                        <div
+                          key={`${item.productId}-${item.option}`}
+                          className="flex items-center gap-4 rounded-2xl border border-bone/10 bg-espresso p-4"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-display text-lg text-bone">
+                              {line.product.name}
+                            </p>
+                            <p className="text-xs text-bone/45">
+                              {line.option.label} · {formatZAR(line.unit)} each
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() =>
+                                setCount(
+                                  item.productId,
+                                  item.option,
+                                  item.count - 1
+                                )
+                              }
+                              aria-label="Decrease quantity"
+                              className="grid h-7 w-7 place-items-center rounded-full border border-bone/15 text-bone/70 transition-colors hover:border-coriander hover:text-coriander"
+                            >
+                              <Minus size={13} />
+                            </button>
+                            <span className="w-6 text-center text-sm text-bone">
+                              {item.count}
+                            </span>
+                            <button
+                              onClick={() =>
+                                setCount(
+                                  item.productId,
+                                  item.option,
+                                  item.count + 1
+                                )
+                              }
+                              aria-label="Increase quantity"
+                              className="grid h-7 w-7 place-items-center rounded-full border border-bone/15 text-bone/70 transition-colors hover:border-coriander hover:text-coriander"
+                            >
+                              <Plus size={13} />
+                            </button>
+                          </div>
+                          <span className="w-16 text-right font-display text-lg text-coriander">
+                            {formatZAR(line.total)}
+                          </span>
+                          <button
+                            onClick={() => remove(item.productId, item.option)}
+                            aria-label="Remove"
+                            className="text-bone/40 transition-colors hover:text-ember"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      );
+                    })}
+
+                    <div className="flex items-center justify-between px-1 pt-2">
+                      <span className="text-sm uppercase tracking-widest text-bone/50">
+                        Total
+                      </span>
+                      <span className="font-display text-2xl text-bone">
+                        {formatZAR(totalPrice)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* your details */}
               <div className="mt-8 space-y-5">
                 <Field label="Your name">
                   <input
@@ -62,50 +258,27 @@ export default function ContactPage() {
                     className="input"
                   />
                 </Field>
-
-                <Field label="Which product?">
-                  <select
-                    value={product}
-                    onChange={(e) => setProduct(e.target.value)}
-                    className="input"
-                  >
-                    <option value="">Choose a cut...</option>
-                    {PRODUCTS.map((p) => (
-                      <option
-                        key={p.id}
-                        value={`${p.name} (${p.weight}) - ${formatZAR(p.price)}`}
-                      >
-                        {p.name} · {p.weight} · {formatZAR(p.price)}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-
-                <Field label="How much?">
-                  <input
-                    value={qty}
-                    onChange={(e) => setQty(e.target.value)}
-                    placeholder="e.g. 2 packs, or 1kg"
-                    className="input"
-                  />
-                </Field>
-
                 <Field label="Anything else?">
                   <textarea
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     rows={3}
-                    placeholder="Delivery area, spice preference, gift note..."
+                    placeholder="Delivery area, gift note, collection time..."
                     className="input resize-none"
                   />
                 </Field>
               </div>
 
-              <button type="submit" className="btn-primary mt-8 w-full">
+              <button
+                type="button"
+                onClick={send}
+                disabled={items.length === 0}
+                className="btn-primary mt-8 w-full disabled:cursor-not-allowed disabled:opacity-40"
+              >
                 <Send size={18} />
-                Send via WhatsApp
+                Send order on WhatsApp
               </button>
-            </form>
+            </div>
           </Reveal>
 
           {/* details */}

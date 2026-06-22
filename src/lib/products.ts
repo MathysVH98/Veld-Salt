@@ -122,3 +122,31 @@ export function getByCategory(category: Category | "All") {
 export function formatZAR(n: number) {
   return "R" + n.toFixed(0);
 }
+
+export interface QtyOption {
+  label: string;
+  /** multiplier applied to the product price to get the line total */
+  mult: number;
+}
+
+/** Per-product quantity choices. Biltong and droëwors are priced per kg;
+ *  hampers are priced per 2kg box. */
+export function quantityOptions(p: Product): QtyOption[] {
+  if (p.category === "Gifting") {
+    return [
+      { label: "1 box (2kg)", mult: 1 },
+      { label: "2 boxes (4kg)", mult: 2 },
+    ];
+  }
+  return [
+    { label: "200g", mult: 0.2 },
+    { label: "500g", mult: 0.5 },
+    { label: "1kg", mult: 1 },
+  ];
+}
+
+/** Default quantity used when adding straight from a product card. */
+export function defaultOption(p: Product): QtyOption {
+  const opts = quantityOptions(p);
+  return opts.find((o) => o.mult === 1) ?? opts[0];
+}

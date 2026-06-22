@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, Plus } from "lucide-react";
-import { Product, formatZAR } from "@/lib/products";
-import { waLink } from "@/lib/utils";
+import { Product, formatZAR, defaultOption } from "@/lib/products";
 import ProductVisual from "./ProductVisual";
 import { Cow, Kudu } from "./icons/Animals";
+import { useCart } from "./cart/CartContext";
 
 function StarRating() {
   return (
@@ -26,6 +26,7 @@ function StarRating() {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { add } = useCart();
   return (
     <motion.article
       whileHover={{ y: -6 }}
@@ -93,19 +94,14 @@ export default function ProductCard({ product }: { product: Product }) {
               <StarRating />
             </div>
           </div>
-          <a
-            href={waLink(
-              `Hi Plaas Gedrag, I'd like to order: ${product.name} (${product.weight}) - ${formatZAR(
-                product.price
-              )}.`
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Order ${product.name}`}
+          <button
+            type="button"
+            onClick={() => add(product.id, defaultOption(product).label, 1)}
+            aria-label={`Add ${product.name} to order`}
             className="grid h-11 w-11 place-items-center rounded-full bg-ember text-bone transition-all duration-300 hover:bg-ember-light hover:shadow-[0_8px_24px_-8px_rgba(181,64,42,0.8)]"
           >
             <Plus size={20} />
-          </a>
+          </button>
         </div>
       </div>
     </motion.article>

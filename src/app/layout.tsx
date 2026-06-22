@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AmbientVeld from "@/components/AmbientVeld";
+import { CartProvider } from "@/components/cart/CartContext";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -48,12 +50,15 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} ${manrope.variable}`}>
       <body className="bg-espresso text-bone">
         <AmbientVeld />
-        <SmoothScroll>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </SmoothScroll>
-        <WhatsAppFloat />
+        <CartProvider>
+          <SmoothScroll>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </SmoothScroll>
+          <WhatsAppFloat />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

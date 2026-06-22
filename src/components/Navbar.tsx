@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
 import { BRAND, waLink, cn } from "@/lib/utils";
+import { useCart } from "@/components/cart/CartContext";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -16,6 +17,7 @@ const NAV = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { totalCount, setOpen: setCartOpen } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -59,24 +61,37 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          <div className="flex items-center gap-4 md:gap-5">
+            <button
+              onClick={() => setCartOpen(true)}
+              aria-label={`Open order (${totalCount} items)`}
+              className="relative text-bone/90 transition-colors hover:text-coriander"
+            >
+              <ShoppingBag size={24} />
+              {totalCount > 0 && (
+                <span className="absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-ember px-1 text-[11px] font-bold text-bone">
+                  {totalCount}
+                </span>
+              )}
+            </button>
+
             <a
               href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
+              className="btn-primary hidden md:inline-flex"
             >
               Order Now
             </a>
-          </div>
 
-          <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="text-bone md:hidden"
-          >
-            <Menu size={26} />
-          </button>
+            <button
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+              className="text-bone md:hidden"
+            >
+              <Menu size={26} />
+            </button>
+          </div>
         </nav>
       </motion.header>
 
