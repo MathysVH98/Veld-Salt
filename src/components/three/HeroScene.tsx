@@ -5,11 +5,37 @@ import { Float, ContactShadows, useTexture } from "@react-three/drei";
 import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
 
-/** Central floating cut: the real Geelvet biltong photo, gently hovering. */
+/** Central floating cut: the real Geelvet biltong photo, gently hovering
+ *  over a warm radial backglow for a premium spotlight feel. */
 function Slab() {
   const group = useRef<THREE.Group>(null);
+  const glow = useRef<THREE.Mesh>(null);
   const texture = useTexture("/products/geelvet-biltong-floating.png");
   texture.colorSpace = THREE.SRGBColorSpace;
+
+  // warm radial gradient drawn to a canvas, used as the backglow
+  const glowTexture = useMemo(() => {
+    const size = 256;
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    const ctx = c.getContext("2d")!;
+    const g = ctx.createRadialGradient(
+      size / 2,
+      size / 2,
+      0,
+      size / 2,
+      size / 2,
+      size / 2
+    );
+    g.addColorStop(0, "rgba(232,183,96,0.60)");
+    g.addColorStop(0.35, "rgba(181,64,42,0.34)");
+    g.addColorStop(1, "rgba(181,64,42,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
 
   useFrame((state) => {
     if (!group.current) return;
@@ -19,13 +45,29 @@ function Slab() {
     const { x, y } = state.pointer;
     group.current.rotation.x += (y * 0.2 - group.current.rotation.x) * 0.04;
     group.current.position.x += (x * 0.4 - group.current.position.x) * 0.04;
+    // slow breathing pulse on the glow
+    if (glow.current) {
+      const p = 1 + Math.sin(t * 0.9) * 0.06;
+      glow.current.scale.set(p, p, 1);
+    }
   });
 
   return (
     <group ref={group}>
+      {/* warm backglow */}
+      <mesh ref={glow} position={[0, 0, -0.9]}>
+        <planeGeometry args={[6.4, 6.4]} />
+        <meshBasicMaterial
+          map={glowTexture}
+          transparent
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          toneMapped={false}
+        />
+      </mesh>
       <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.8}>
         <mesh castShadow>
-          <planeGeometry args={[3.6, 3.6]} />
+          <planeGeometry args={[4.2, 4.2]} />
           <meshStandardMaterial
             map={texture}
             transparent
