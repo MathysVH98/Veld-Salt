@@ -23,10 +23,12 @@ def watermark(src, dst):
     font = ImageFont.truetype(FONT_PATH, size)
 
     bbox = draw.textbbox((0, 0), TEXT, font=font)
-    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    pad = round(w * 0.035)
-    x = w - tw - pad - bbox[0]
-    y = h - th - pad - bbox[1]
+    tw = bbox[2] - bbox[0]
+    # Cards crop to a centered 4:3 window (object-cover), which clips the
+    # corners of most photos. Centre the mark horizontally and raise it off
+    # the bottom so it stays inside the visible window on every aspect ratio.
+    x = (w - tw) // 2 - bbox[0]
+    y = round(h * 0.72) - bbox[1]
 
     # soft shadow for legibility on any background, then the bone wordmark
     draw.text((x + 2, y + 2), TEXT, font=font, fill=(0, 0, 0, 120))

@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Reveal from "./Reveal";
 
 export default function StoryParallax() {
@@ -35,13 +36,30 @@ export default function StoryParallax() {
         <div className="relative h-[420px] md:h-[560px]">
           <motion.div
             style={{ y: ySlow, rotate }}
-            className="absolute left-4 top-4 h-3/4 w-3/4 rounded-3xl bg-gradient-to-br from-oxblood to-oxblood-deep shadow-2xl shadow-black/50"
-          />
+            className="absolute left-4 top-4 h-3/4 w-3/4 overflow-hidden rounded-3xl shadow-2xl shadow-black/50"
+          >
+            <Image
+              src="/products/geelvet-biltong.png"
+              alt="Hand-cut biltong, air-dried the slow way"
+              fill
+              sizes="(max-width: 768px) 75vw, 35vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-oxblood/40 via-transparent to-espresso/40" />
+          </motion.div>
           <motion.div
             style={{ y: yFast }}
-            className="absolute bottom-0 right-0 h-3/5 w-3/5 overflow-hidden rounded-3xl border border-coriander/20 bg-gradient-to-br from-espresso-100 to-espresso"
+            className="absolute bottom-0 right-0 h-3/5 w-3/5 overflow-hidden rounded-3xl border border-coriander/20"
           >
-            <div className="flex h-full flex-col justify-end p-6">
+            <Image
+              src="/products/game-droewors.png"
+              alt="Droëwors hanging through the slow dry"
+              fill
+              sizes="(max-width: 768px) 60vw, 28vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/75 to-espresso/10" />
+            <div className="relative flex h-full flex-col justify-end p-6">
               <span className="font-display text-6xl text-coriander">14</span>
               <span className="mt-2 text-sm uppercase tracking-widest text-bone/60">
                 days of slow drying
