@@ -2,23 +2,24 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Flame, Plus } from "lucide-react";
+import { Star, Plus } from "lucide-react";
 import { Product, formatZAR } from "@/lib/products";
 import { waLink } from "@/lib/utils";
 import ProductVisual from "./ProductVisual";
 
-function SpiceMeter({ level }: { level: number }) {
-  if (level === 0) return null;
+function StarRating() {
   return (
-    <span className="flex items-center gap-0.5" title={`Heat ${level}/3`}>
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Flame
-          key={i}
-          size={13}
-          className={i < level ? "text-ember" : "text-bone/20"}
-          fill={i < level ? "currentColor" : "none"}
-        />
-      ))}
+    <span
+      className="flex items-center gap-1"
+      title="Rated 5 out of 5"
+      aria-label="Rated 5 out of 5"
+    >
+      <span className="flex items-center gap-0.5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} size={14} className="text-coriander" fill="currentColor" />
+        ))}
+      </span>
+      <span className="text-xs font-medium text-bone/45">5.0</span>
     </span>
   );
 }
@@ -58,9 +59,8 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-center justify-between text-xs uppercase tracking-widest text-bone/45">
+        <div className="flex items-center text-xs uppercase tracking-widest text-bone/45">
           <span>{product.category}</span>
-          <span>{product.weight}</span>
         </div>
         <h3 className="mt-2 font-display text-2xl leading-tight text-bone">
           {product.name}
@@ -69,12 +69,19 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.blurb}
         </p>
 
-        <div className="mt-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-display text-2xl text-coriander">
-              {formatZAR(product.price)}
-            </span>
-            <SpiceMeter level={product.spice} />
+        <div className="mt-6 flex items-end justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="font-display text-2xl text-coriander">
+                {formatZAR(product.price)}
+              </span>
+              <span className="text-[11px] uppercase tracking-widest text-bone/45">
+                {product.weight}
+              </span>
+            </div>
+            <div className="mt-2">
+              <StarRating />
+            </div>
           </div>
           <a
             href={waLink(

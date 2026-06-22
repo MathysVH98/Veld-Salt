@@ -1,3 +1,4 @@
+import Image from "next/image";
 import StoryParallax from "@/components/StoryParallax";
 import Process from "@/components/Process";
 import Marquee from "@/components/Marquee";
@@ -50,6 +51,66 @@ export default function StoryPage() {
 
       <Marquee />
       <StoryParallax />
+
+      {/* the drying room */}
+      <section className="py-28 md:py-40">
+        <div className="container-x">
+          <Reveal>
+            <span className="eyebrow mb-6">
+              <span className="h-px w-10 bg-coriander" />
+              The drying room
+            </span>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="max-w-3xl font-display text-4xl font-light leading-tight text-bone md:text-6xl">
+              Hung by hand.{" "}
+              <span className="italic text-ember">Dried by the veld air.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-bone/70">
+              Every cut and every coil hangs in our Waterberg drying room until
+              the air does its work. No tumblers, no accelerants, just airflow
+              and time, exactly as it should be.
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <Reveal>
+              <figure className="overflow-hidden rounded-3xl border border-bone/10">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src="/products/biltong-drying.jpg"
+                    alt="Biltong hanging on hooks to air-dry in the Waterberg drying room"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+                <figcaption className="bg-espresso-50 px-5 py-4 text-xs uppercase tracking-widest text-bone/55">
+                  Biltong on the hooks
+                </figcaption>
+              </figure>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <figure className="overflow-hidden rounded-3xl border border-bone/10">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src="/products/droewors-drying.jpg"
+                    alt="Coils of droëwors hanging through the slow dry"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+                <figcaption className="bg-espresso-50 px-5 py-4 text-xs uppercase tracking-widest text-bone/55">
+                  Droëwors through the slow dry
+                </figcaption>
+              </figure>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       {/* values */}
       <section className="bg-espresso-50 py-28 md:py-40">
