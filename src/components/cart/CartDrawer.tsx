@@ -246,7 +246,7 @@ export default function CartDrawer() {
                     </div>
 
                     <Link
-                      href="/contact"
+                      href="/order"
                       onClick={() => setOpen(false)}
                       className="btn-primary w-full"
                     >

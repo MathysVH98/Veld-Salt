@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ShoppingBag } from "lucide-react";
-import { BRAND, waLink, cn } from "@/lib/utils";
+import { BRAND, cn } from "@/lib/utils";
 import { useCart } from "@/components/cart/CartContext";
 
 const NAV = [
@@ -75,14 +75,9 @@ export default function Navbar() {
               )}
             </button>
 
-            <a
-              href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary hidden md:inline-flex"
-            >
+            <Link href="/order" className="btn-primary hidden md:inline-flex">
               Order Now
-            </a>
+            </Link>
 
             <button
               aria-label="Open menu"
@@ -141,14 +136,13 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <a
-                href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/order"
+                onClick={() => setOpen(false)}
                 className="btn-primary mt-8 w-full"
               >
-                Order on WhatsApp
-              </a>
+                Order Now
+              </Link>
               <p className="mt-6 text-sm text-bone/50">{BRAND.tagline}</p>
             </motion.div>
           </motion.div>
