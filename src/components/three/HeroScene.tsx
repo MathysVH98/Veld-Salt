@@ -12,6 +12,11 @@ function Slab() {
   const glow = useRef<THREE.Mesh>(null);
   const texture = useTexture("/products/geelvet-biltong-floating.png");
   texture.colorSpace = THREE.SRGBColorSpace;
+  // crisp, smooth sampling at the plane's angle and soft feathered edges
+  texture.anisotropy = 16;
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
 
   // warm radial gradient drawn to a canvas, used as the backglow
   const glowTexture = useMemo(() => {
@@ -66,12 +71,13 @@ function Slab() {
         />
       </mesh>
       <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.8}>
-        <mesh castShadow>
+        <mesh>
           <planeGeometry args={[4.2, 4.2]} />
           <meshStandardMaterial
             map={texture}
             transparent
-            alphaTest={0.5}
+            alphaTest={0.04}
+            depthWrite={false}
             roughness={0.7}
             metalness={0}
             side={THREE.DoubleSide}
