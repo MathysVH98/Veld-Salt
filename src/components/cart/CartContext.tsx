@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -23,6 +24,17 @@ export type CartItem = {
   count: number;
 };
 
+export const FREE_SHIPPING_THRESHOLD = 1000;
+export const SHIPPING_FEE = 150;
+
+/** Flat-rate shipping, free once the subtotal reaches the threshold. */
+export function shippingFor(subtotal: number): number {
+  if (subtotal <= 0) return 0;
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+}
+
+type Toast = { id: number; msg: string };
+
 type CartContextValue = {
   items: CartItem[];
   open: boolean;
@@ -33,7 +45,10 @@ type CartContextValue = {
   changeOption: (productId: string, from: string, to: string) => void;
   clear: () => void;
   totalCount: number;
-  totalPrice: number;
+  subtotal: number;
+  shipping: number;
+  grandTotal: number;
+  toast: Toast | null;
 };
 
 const Ctx = createContext<CartContextValue | null>(null);
@@ -57,11 +72,21 @@ export function resolveLine(item: CartItem): CartLine | null {
   return { product, option, unit, total: unit * item.count, count: item.count };
 }
 
+function subtotalOf(items: CartItem[]): number {
+  return items.reduce((s, it) => s + (resolveLine(it)?.total ?? 0), 0);
+}
+
+export type OrderDetails = {
+  name?: string;
+  phone?: string;
+  address?: string;
+  note?: string;
+};
+
 /** Compose the WhatsApp order message from the cart. */
 export function buildOrderMessage(
   items: CartItem[],
-  name?: string,
-  note?: string
+  details: OrderDetails = {}
 ): string {
   const lines = items
     .map((it, i) => {
@@ -73,13 +98,22 @@ export function buildOrderMessage(
     })
     .filter(Boolean);
 
-  const total = items.reduce((s, it) => s + (resolveLine(it)?.total ?? 0), 0);
+  const subtotal = subtotalOf(items);
+  const shipping = shippingFor(subtotal);
 
-  let msg = `Hi Plaas Gedrag!\n\nMy order:\n${lines.join(
-    "\n"
-  )}\n\nOrder total: ${formatZAR(total)}`;
-  if (name?.trim()) msg += `\n\nName: ${name.trim()}`;
-  if (note?.trim()) msg += `\nNote: ${note.trim()}`;
+  let msg = `Hi Plaas Gedrag!\n\nMy order:\n${lines.join("\n")}`;
+  msg += `\n\nSubtotal: ${formatZAR(subtotal)}`;
+  msg += `\nShipping: ${shipping === 0 ? "Free" : formatZAR(shipping)}`;
+  msg += `\nOrder total: ${formatZAR(subtotal + shipping)}`;
+
+  const detailLines = [
+    details.name?.trim() && `Name: ${details.name.trim()}`,
+    details.phone?.trim() && `Phone: ${details.phone.trim()}`,
+    details.address?.trim() && `Delivery address: ${details.address.trim()}`,
+    details.note?.trim() && `Note: ${details.note.trim()}`,
+  ].filter(Boolean);
+  if (detailLines.length) msg += `\n\n${detailLines.join("\n")}`;
+
   return msg;
 }
 
@@ -87,6 +121,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [open, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [toast, setToast] = useState<Toast | null>(null);
+  const toastId = useRef(0);
 
   useEffect(() => {
     try {
@@ -107,6 +143,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, hydrated]);
 
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   const add = useCallback(
     (productId: string, option: string, count = 1) => {
       setItems((prev) => {
@@ -120,7 +162,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         return [...prev, { productId, option, count }];
       });
-      setOpen(true);
+      // Show a lightweight confirmation instead of forcing the drawer open,
+      // so the customer can keep browsing and adding products.
+      const p = PRODUCTS.find((x) => x.id === productId);
+      setToast({
+        id: (toastId.current += 1),
+        msg: p ? `${p.name} added to your order` : "Added to your order",
+      });
     },
     []
   );
@@ -181,10 +229,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     () => items.reduce((s, x) => s + x.count, 0),
     [items]
   );
-  const totalPrice = useMemo(
-    () => items.reduce((s, x) => s + (resolveLine(x)?.total ?? 0), 0),
-    [items]
-  );
+  const subtotal = useMemo(() => subtotalOf(items), [items]);
+  const shipping = useMemo(() => shippingFor(subtotal), [subtotal]);
+  const grandTotal = subtotal + shipping;
 
   const value: CartContextValue = {
     items,
@@ -196,7 +243,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     changeOption,
     clear,
     totalCount,
-    totalPrice,
+    subtotal,
+    shipping,
+    grandTotal,
+    toast,
   };
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

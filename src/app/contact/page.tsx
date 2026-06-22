@@ -22,13 +22,17 @@ import {
   useCart,
   resolveLine,
   buildOrderMessage,
+  FREE_SHIPPING_THRESHOLD,
 } from "@/components/cart/CartContext";
 import Reveal from "@/components/Reveal";
 
 export default function ContactPage() {
-  const { items, add, remove, setCount, clear, totalPrice } = useCart();
+  const { items, add, remove, setCount, clear, subtotal, shipping, grandTotal } =
+    useCart();
 
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
 
   // add-a-product builder
@@ -50,10 +54,14 @@ export default function ContactPage() {
     setBuilderCount(1);
   };
 
+  const canSend = Boolean(
+    items.length && name.trim() && phone.trim() && address.trim()
+  );
+
   const send = () => {
-    if (!items.length) return;
+    if (!canSend) return;
     window.open(
-      waLink(buildOrderMessage(items, name, note)),
+      waLink(buildOrderMessage(items, { name, phone, address, note })),
       "_blank",
       "noopener,noreferrer"
     );
@@ -236,48 +244,96 @@ export default function ContactPage() {
                       );
                     })}
 
-                    <div className="flex items-center justify-between px-1 pt-2">
+                    <div className="space-y-1.5 px-1 pt-3 text-sm">
+                      <div className="flex items-center justify-between text-bone/60">
+                        <span>Subtotal</span>
+                        <span>{formatZAR(subtotal)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-bone/60">
+                        <span>Shipping</span>
+                        <span>
+                          {shipping === 0 ? "Free" : formatZAR(shipping)}
+                        </span>
+                      </div>
+                      {subtotal < FREE_SHIPPING_THRESHOLD && (
+                        <p className="text-xs text-coriander">
+                          Add {formatZAR(FREE_SHIPPING_THRESHOLD - subtotal)} more
+                          for free shipping.
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-2 flex items-center justify-between border-t border-bone/10 px-1 pt-3">
                       <span className="text-sm uppercase tracking-widest text-bone/50">
                         Total
                       </span>
                       <span className="font-display text-2xl text-bone">
-                        {formatZAR(totalPrice)}
+                        {formatZAR(grandTotal)}
                       </span>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* your details */}
-              <div className="mt-8 space-y-5">
-                <Field label="Your name">
-                  <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Thabo"
-                    className="input"
-                  />
-                </Field>
-                <Field label="Anything else?">
-                  <textarea
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                    rows={3}
-                    placeholder="Delivery area, gift note, collection time..."
-                    className="input resize-none"
-                  />
-                </Field>
+              {/* your delivery details */}
+              <div className="mt-8">
+                <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-bone/50">
+                  Delivery details
+                </h3>
+                <div className="space-y-5">
+                  <Field label="Your name">
+                    <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g. Thabo Mokoena"
+                      className="input"
+                    />
+                  </Field>
+                  <Field label="Phone number">
+                    <input
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      type="tel"
+                      placeholder="e.g. 072 681 7383"
+                      className="input"
+                    />
+                  </Field>
+                  <Field label="Delivery address">
+                    <textarea
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      rows={3}
+                      placeholder="Street address, suburb, city and postal code"
+                      className="input resize-none"
+                    />
+                  </Field>
+                  <Field label="Anything else?">
+                    <textarea
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      rows={2}
+                      placeholder="Gift note, collection time, special requests..."
+                      className="input resize-none"
+                    />
+                  </Field>
+                </div>
               </div>
 
               <button
                 type="button"
                 onClick={send}
-                disabled={items.length === 0}
+                disabled={!canSend}
                 className="btn-primary mt-8 w-full disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Send size={18} />
                 Send order on WhatsApp
               </button>
+              {!canSend && (
+                <p className="mt-3 text-center text-xs text-bone/45">
+                  {items.length === 0
+                    ? "Add at least one product to your order."
+                    : "Add your name, phone and delivery address to send."}
+                </p>
+              )}
             </div>
           </Reveal>
 
