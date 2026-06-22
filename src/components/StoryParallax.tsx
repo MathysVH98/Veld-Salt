@@ -76,7 +76,7 @@ export default function StoryParallax() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-8 text-lg leading-relaxed text-bone/70">
-              Veld &amp; Salt began on a dust road in the Waterberg, where a
+              Plaas Gedrag began on a dust road in the Waterberg, where a
               fourth-generation farmer still hangs his beef the way his
               grandfather did. We buy the whole animal, cure it by hand, and let
               the dry highveld air do the rest.

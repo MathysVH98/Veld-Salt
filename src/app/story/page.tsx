@@ -40,7 +40,7 @@ export default function StoryPage() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-8 max-w-2xl text-xl leading-relaxed text-bone/70">
-              Veld &amp; Salt is not a factory. It is a farmer, a drying room, and
+              Plaas Gedrag is not a factory. It is a farmer, a drying room, and
               a stubborn belief that biltong should taste of the animal and the
               air it dried in. Nothing else.
             </p>

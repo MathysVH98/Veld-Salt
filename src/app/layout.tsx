@@ -21,7 +21,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Veld & Salt | Air-dried Biltong from the Waterberg",
+  title: "Plaas Gedrag | Air-dried Biltong from the Waterberg",
   description:
     "Premium South African biltong and droëwors, beef and game. Hand-cut, slow air-dried, sourced from a single farm in the Waterberg region of Limpopo.",
   keywords: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "air-dried beef",
   ],
   openGraph: {
-    title: "Veld & Salt | Air-dried Biltong from the Waterberg",
+    title: "Plaas Gedrag | Air-dried Biltong from the Waterberg",
     description: "Hand-cut, slow air-dried biltong from a single Waterberg farm.",
     type: "website",
   },

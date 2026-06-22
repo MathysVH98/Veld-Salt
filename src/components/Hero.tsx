@@ -95,7 +95,7 @@ export default function Hero() {
             Explore the Range
           </Link>
           <a
-            href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+            href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost"

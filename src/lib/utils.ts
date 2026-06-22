@@ -6,12 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const BRAND = {
-  name: "Veld & Salt",
+  name: "Plaas Gedrag",
   tagline: "Air-dried. Hand-cut. Proudly Waterberg.",
   region: "Waterberg, Limpopo",
-  whatsapp: "27783186923", // format: country code + number, no +
+  whatsapp: "27726817383", // format: country code + number, no +
   email: "21rssolutions@gmail.com",
-  phone: "+27 78 318 6923",
+  phone: "+27 72 681 7383",
 };
 
 export function waLink(message: string) {

@@ -12,13 +12,13 @@ export default function ContactPage() {
   const [qty, setQty] = useState("");
   const [note, setNote] = useState("");
 
-  const message = `Hi Veld & Salt!%0A%0AName: ${name || "(your name)"}%0AProduct: ${
+  const message = `Hi Plaas Gedrag!%0A%0AName: ${name || "(your name)"}%0AProduct: ${
     product || "(what you'd like)"
   }%0AQuantity: ${qty || "(how much)"}%0A%0A${note}`;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Hi Veld & Salt!\n\nName: ${name}\nProduct: ${product}\nQuantity: ${qty}\n\n${note}`;
+    const msg = `Hi Plaas Gedrag!\n\nName: ${name}\nProduct: ${product}\nQuantity: ${qty}\n\n${note}`;
     window.open(waLink(msg), "_blank", "noopener,noreferrer");
   };
 
@@ -109,7 +109,7 @@ export default function ContactPage() {
           <Reveal delay={0.1}>
             <div className="flex h-full flex-col gap-5">
               <a
-                href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+                href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-5 rounded-3xl border border-ember/40 bg-ember/10 p-7 transition-colors hover:bg-ember/20"

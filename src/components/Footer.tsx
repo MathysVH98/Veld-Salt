@@ -10,10 +10,10 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-3">
               <span className="grid h-9 w-9 place-items-center rounded-full border border-coriander/50 font-display text-lg text-coriander">
-                V
+                P
               </span>
               <span className="font-display text-xl font-semibold text-bone">
-                Veld <span className="text-ember">&amp;</span> Salt
+                Plaas Gedrag
               </span>
             </Link>
             <p className="mt-6 max-w-sm text-bone/60">{BRAND.tagline}</p>
@@ -44,7 +44,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+                  href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-underline"
@@ -89,7 +89,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-bone/10 pt-8 text-sm text-bone/40 md:flex-row">
-          <p>© {new Date().getFullYear()} Veld &amp; Salt. Hand-cut in the Waterberg.</p>
+          <p>© {new Date().getFullYear()} Plaas Gedrag. Hand-cut in the Waterberg.</p>
           <p>Made with salt, patience and good beef.</p>
         </div>
       </div>

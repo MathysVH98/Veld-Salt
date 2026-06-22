@@ -18,7 +18,7 @@ export default function WhatsAppFloat() {
     <AnimatePresence>
       {show && (
         <motion.a
-          href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+          href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Order on WhatsApp"

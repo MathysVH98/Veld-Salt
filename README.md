@@ -1,4 +1,4 @@
-# Veld & Salt
+# Plaas Gedrag
 
 Premium South African biltong brand site. Air-dried, hand-cut, single-farm sourced from the **Waterberg region of Limpopo**.
 
@@ -39,13 +39,9 @@ src/
     utils.ts        Brand config, WhatsApp link helper
 ```
 
-## Before going live (placeholders to replace)
+## Before going live
 
-All in `src/lib/utils.ts`:
-
-- `BRAND.whatsapp` set to the real WhatsApp business number (format: country code + number, no `+`, e.g. `2782...`)
-- `BRAND.email` set to the real orders inbox
-- `BRAND.phone` set to the real phone number
+Brand contact details in `src/lib/utils.ts` (`BRAND.whatsapp`, `BRAND.email`, `BRAND.phone`) are set to the live business values.
 
 Product imagery is currently rendered procedurally (`ProductVisual.tsx`) so the site looks designed with zero external assets. Swap in real photography per product when available.
 

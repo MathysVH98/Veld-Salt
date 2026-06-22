@@ -46,7 +46,7 @@ export default function CTASection() {
         <Reveal delay={0.15}>
           <a
             href={waLink(
-              "Hi Veld & Salt, I'd like to place an order. Here's what I'm after:"
+              "Hi Plaas Gedrag, I'd like to place an order. Here's what I'm after:"
             )}
             target="_blank"
             rel="noopener noreferrer"

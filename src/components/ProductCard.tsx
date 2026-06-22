@@ -67,7 +67,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
           <a
             href={waLink(
-              `Hi Veld & Salt, I'd like to order: ${product.name} (${product.weight}) - ${formatZAR(
+              `Hi Plaas Gedrag, I'd like to order: ${product.name} (${product.weight}) - ${formatZAR(
                 product.price
               )}.`
             )}

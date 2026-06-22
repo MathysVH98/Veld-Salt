@@ -40,10 +40,10 @@ export default function Navbar() {
         <nav className="container-x flex h-20 items-center justify-between">
           <Link href="/" className="group flex items-center gap-3">
             <span className="grid h-9 w-9 place-items-center rounded-full border border-coriander/50 text-coriander transition-colors group-hover:bg-coriander group-hover:text-espresso">
-              <span className="font-display text-lg font-semibold">V</span>
+              <span className="font-display text-lg font-semibold">P</span>
             </span>
             <span className="font-display text-xl font-semibold tracking-tight text-bone">
-              Veld <span className="text-ember">&amp;</span> Salt
+              Plaas Gedrag
             </span>
           </Link>
 
@@ -61,7 +61,7 @@ export default function Navbar() {
 
           <div className="hidden md:block">
             <a
-              href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+              href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
@@ -90,7 +90,7 @@ export default function Navbar() {
           >
             <div className="container-x flex h-20 items-center justify-between">
               <span className="font-display text-xl font-semibold text-bone">
-                Veld <span className="text-ember">&amp;</span> Salt
+                Plaas Gedrag
               </span>
               <button
                 aria-label="Close menu"
@@ -127,7 +127,7 @@ export default function Navbar() {
                 </motion.div>
               ))}
               <a
-                href={waLink("Hi Veld & Salt, I'd like to place an order.")}
+                href={waLink("Hi Plaas Gedrag, I'd like to place an order.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary mt-8 w-full"
