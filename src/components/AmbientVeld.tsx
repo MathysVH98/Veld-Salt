@@ -25,37 +25,14 @@ export default function AmbientVeld() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const rand = (a: number, b: number) => a + Math.random() * (b - a);
 
-    // Pre-render a shaded coriander-seed sprite (round, pale tan, soft
-    // highlight so it reads as a little 3D seed rather than a flat dot).
-    const makeSeed = (base: string, hi: string, edge: string) => {
-      const s = 48;
-      const c = document.createElement("canvas");
-      c.width = c.height = s;
-      const g = c.getContext("2d")!;
-      const grad = g.createRadialGradient(
-        s * 0.38,
-        s * 0.36,
-        s * 0.04,
-        s * 0.5,
-        s * 0.5,
-        s * 0.5
-      );
-      grad.addColorStop(0, hi);
-      grad.addColorStop(0.55, base);
-      grad.addColorStop(1, edge);
-      g.fillStyle = grad;
-      g.beginPath();
-      g.arc(s / 2, s / 2, s / 2 - 2, 0, Math.PI * 2);
-      g.fill();
-      return c;
+    // real coriander seed sprite
+    const img = new Image();
+    let ready = false;
+    img.onload = () => {
+      ready = true;
+      if (reduce) staticDraw();
     };
-
-    // a few dried-coriander tones for natural variation
-    const SEEDS = [
-      makeSeed("#CDB87F", "#EFE4C0", "#8C7A4C"),
-      makeSeed("#D9C88E", "#F2E9CB", "#9C8A58"),
-      makeSeed("#BDA46C", "#E3D4A6", "#7C6A40"),
-    ];
+    img.src = "/coriander-seed.png";
 
     type Mote = {
       x: number;
@@ -65,7 +42,8 @@ export default function AmbientVeld() {
       vy: number;
       a: number;
       tw: number;
-      seed: number;
+      rot: number;
+      spin: number;
     };
 
     let w = 0;
@@ -81,16 +59,17 @@ export default function AmbientVeld() {
       canvas!.style.height = h + "px";
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.round(Math.min(55, (w * h) / 32000));
+      const count = Math.round(Math.min(48, (w * h) / 36000));
       motes = Array.from({ length: count }, () => ({
         x: rand(0, w),
         y: rand(0, h),
-        r: rand(1.4, 3.4),
-        vx: rand(-0.12, 0.12),
-        vy: rand(-0.3, -0.05), // gentle drift upward
-        a: rand(0.3, 0.75),
+        r: rand(2.2, 4.6),
+        vx: rand(-0.1, 0.1),
+        vy: rand(-0.28, -0.05), // gentle drift upward
+        a: rand(0.4, 0.85),
         tw: rand(0, Math.PI * 2),
-        seed: Math.floor(Math.random() * SEEDS.length),
+        rot: rand(0, Math.PI * 2),
+        spin: rand(-0.01, 0.01),
       }));
     }
 
@@ -107,9 +86,19 @@ export default function AmbientVeld() {
     };
 
     function drawMote(m: Mote, alpha: number) {
+      if (!ready) return;
+      ctx!.save();
       ctx!.globalAlpha = alpha;
-      const d = m.r * 2;
-      ctx!.drawImage(SEEDS[m.seed], m.x - m.r, m.y - m.r, d, d);
+      ctx!.translate(m.x, m.y);
+      ctx!.rotate(m.rot);
+      ctx!.drawImage(img, -m.r, -m.r, m.r * 2, m.r * 2);
+      ctx!.restore();
+    }
+
+    function staticDraw() {
+      ctx!.clearRect(0, 0, w, h);
+      for (const m of motes) drawMote(m, m.a * 0.85);
+      ctx!.globalAlpha = 1;
     }
 
     let raf = 0;
@@ -135,17 +124,18 @@ export default function AmbientVeld() {
         m.x += m.vx;
         m.y += m.vy;
         m.tw += 0.012;
+        m.rot += m.spin;
 
         // wrap around the viewport
-        if (m.y < -12) {
-          m.y = h + 12;
+        if (m.y < -16) {
+          m.y = h + 16;
           m.x = rand(0, w);
         }
-        if (m.x < -12) m.x = w + 12;
-        if (m.x > w + 12) m.x = -12;
+        if (m.x < -16) m.x = w + 16;
+        if (m.x > w + 16) m.x = -16;
 
         const tw = (Math.sin(m.tw) + 1) / 2; // 0..1 gentle shimmer
-        drawMote(m, m.a * (0.75 + 0.25 * tw));
+        drawMote(m, m.a * (0.85 + 0.15 * tw));
       }
 
       ctx!.globalAlpha = 1;
@@ -164,10 +154,7 @@ export default function AmbientVeld() {
 
     if (reduce) {
       // static pass: draw a calm scatter once, no motion or cursor tracking
-      ctx.clearRect(0, 0, w, h);
-      for (const m of motes) drawMote(m, m.a * 0.6);
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
+      staticDraw();
     } else {
       window.addEventListener("mousemove", onMove);
       window.addEventListener("mouseout", onLeave);

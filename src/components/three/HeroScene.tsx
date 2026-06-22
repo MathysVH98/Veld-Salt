@@ -88,15 +88,14 @@ function Slab() {
   );
 }
 
-/** Drifting spice motes (coriander gold + dark peppercorns). */
-function Spices({ count = 320 }: { count?: number }) {
+/** Drifting coriander seeds around the cut. */
+function Spices({ count = 240 }: { count?: number }) {
   const points = useRef<THREE.Points>(null);
+  const tex = useTexture("/coriander-seed.png");
+  tex.colorSpace = THREE.SRGBColorSpace;
 
-  const { positions, colors } = useMemo(() => {
+  const positions = useMemo(() => {
     const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-    const gold = new THREE.Color("#D6A24A");
-    const pepper = new THREE.Color("#2A1E16");
     for (let i = 0; i < count; i++) {
       const r = 3 + Math.random() * 4;
       const theta = Math.random() * Math.PI * 2;
@@ -104,12 +103,8 @@ function Spices({ count = 320 }: { count?: number }) {
       positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = (Math.random() - 0.5) * 6;
       positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-      const c = Math.random() > 0.45 ? gold : pepper;
-      colors[i * 3] = c.r;
-      colors[i * 3 + 1] = c.g;
-      colors[i * 3 + 2] = c.b;
     }
-    return { positions, colors };
+    return positions;
   }, [count]);
 
   useFrame((state) => {
@@ -122,17 +117,13 @@ function Spices({ count = 320 }: { count?: number }) {
   return (
     <points ref={points}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
-        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.055}
-        vertexColors
+        map={tex}
+        size={0.22}
         transparent
-        opacity={0.85}
+        alphaTest={0.5}
         sizeAttenuation
         depthWrite={false}
       />
@@ -168,8 +159,8 @@ export default function HeroScene() {
 
       <Suspense fallback={null}>
         <Slab />
+        <Spices />
       </Suspense>
-      <Spices />
 
       <ContactShadows
         position={[0, -1.9, 0]}
