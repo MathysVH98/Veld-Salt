@@ -2,8 +2,9 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { MessageCircle } from "lucide-react";
-import { BRAND, waLink } from "@/lib/utils";
+import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
+import { BRAND } from "@/lib/utils";
 import Reveal from "./Reveal";
 
 export default function CTASection() {
@@ -27,34 +28,31 @@ export default function CTASection() {
         <Reveal>
           <span className="eyebrow mb-8 justify-center">
             <span className="h-px w-10 bg-coriander" />
-            No app, no cart, no fuss
+            Ready when you are
             <span className="h-px w-10 bg-coriander" />
           </span>
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mx-auto max-w-4xl font-display text-5xl font-light leading-[1.02] text-bone md:text-8xl">
-            Order straight from{" "}
-            <span className="italic text-ember">WhatsApp.</span>
+            Good biltong is only{" "}
+            <span className="italic text-ember">a message away.</span>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
           <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-bone/70">
-            Tell us what you want and how much. We cut it fresh, seal it, and
-            arrange delivery anywhere in South Africa. It really is that simple.
+            Build your box on the order page, choosing the cuts and weights you
+            would like. We cut everything fresh, seal it within the hour, and
+            arrange delivery anywhere in South Africa.
           </p>
         </Reveal>
         <Reveal delay={0.15}>
-          <a
-            href={waLink(
-              "Hi Plaas Gedrag, I'd like to place an order. Here's what I'm after:"
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/order"
             className="btn-primary mx-auto mt-12 px-9 py-4 text-base"
           >
-            <MessageCircle size={20} />
-            Chat to order
-          </a>
+            <ShoppingBag size={20} />
+            Start your order
+          </Link>
         </Reveal>
         <Reveal delay={0.2}>
           <p className="mt-6 text-sm text-bone/40">

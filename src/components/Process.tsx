@@ -18,7 +18,7 @@ const STEPS = [
   {
     no: "03",
     title: "Hang",
-    body: "The meat hangs for up to fourteen days in dry highveld air. No heat, no rush. The veld does the work.",
+    body: "The meat hangs for up to fourteen days in dry highveld air, with no heat and no rush, while the veld quietly does the work.",
   },
   {
     no: "04",
@@ -46,7 +46,8 @@ export default function Process() {
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mb-20 max-w-2xl font-display text-4xl font-light leading-tight text-bone md:text-6xl">
-            Four steps. <span className="italic text-ember">Zero shortcuts.</span>
+            Four steps,{" "}
+            <span className="italic text-ember">and not a single shortcut.</span>
           </h2>
         </Reveal>
 

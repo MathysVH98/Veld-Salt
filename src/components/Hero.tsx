@@ -81,8 +81,8 @@ export default function Hero() {
           className="mt-8 max-w-xl text-lg leading-relaxed text-bone/70"
         >
           Hand-cut biltong and droëwors from a single family farm in the
-          Waterberg. No shortcuts, no nonsense. Just salt, spice, patience and
-          good Limpopo beef.
+          Waterberg, made with nothing more than good Limpopo beef, honest
+          spice and the patience to let the air do its work.
         </motion.p>
 
         <motion.div

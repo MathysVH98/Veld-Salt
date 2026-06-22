@@ -8,25 +8,25 @@ import Reveal from "./Reveal";
 const REVIEWS = [
   {
     quote:
-      "Genuinely the best biltong I have eaten outside my late father's garage. The garlic cut is dangerous. It does not last a day in this house.",
+      "Genuinely the best biltong I have eaten outside my late father's garage. The Geelvet cut is dangerous, it does not last a day in this house.",
     name: "Thandeka M.",
     city: "Pretoria",
   },
   {
     quote:
-      "You can taste that it is a single farm. Clean, beefy, properly dried. The droëwors snaps like it should. We order a Trekker box every month.",
+      "You can taste that it comes from a single farm. Clean, beefy and properly dried, with droëwors that snaps the way it should. We order a hamper most months.",
     name: "Ruan & Lize",
     city: "Bela-Bela",
   },
   {
     quote:
-      "Ordered the kudu biltong for a braai and my guests would not stop talking about it. Ships fast, sealed perfectly, no fuss on WhatsApp.",
+      "Ordered the game biltong for a braai and my guests would not stop talking about it. It ships fast, sealed perfectly, and ordering on WhatsApp was effortless.",
     name: "Sipho D.",
     city: "Johannesburg",
   },
   {
     quote:
-      "Peri-peri with real heat that does not wreck the flavour. This is what biltong should taste like. I am never buying garage biltong again.",
+      "Properly beefy, never too dry, with a real coriander backbone. This is what biltong is meant to taste like. I am never going back to garage biltong again.",
     name: "Carla V.",
     city: "Polokwane",
   },

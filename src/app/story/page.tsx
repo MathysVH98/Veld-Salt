@@ -8,15 +8,15 @@ import Reveal from "@/components/Reveal";
 const VALUES = [
   {
     title: "Single-farm",
-    body: "We never blend mystery meat from a dozen suppliers. One Waterberg farm, one herd, full traceability from veld to vacuum pack.",
+    body: "We never blend mystery meat from a dozen suppliers. Every cut is traceable to a single Waterberg farm and a single herd, from the veld to the vacuum pack.",
   },
   {
     title: "Slow by design",
-    body: "Industrial biltong is force-dried in hours. Ours hangs for up to two weeks. Time is the only flavour enhancer we use.",
+    body: "Where industrial biltong is force-dried in a matter of hours, ours hangs for up to two weeks, because time is the only flavour enhancer we believe in.",
   },
   {
     title: "Nothing to hide",
-    body: "Coriander, salt, pepper, vinegar. That is the list. No MSG, no nitrates, no soy, no sugar fillers padding out the weight.",
+    body: "Our cure is simply coriander, salt, pepper and vinegar, with no MSG, nitrates, soy or sugar fillers quietly padding out the weight.",
   },
 ];
 
@@ -41,9 +41,9 @@ export default function StoryPage() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-8 max-w-2xl text-xl leading-relaxed text-bone/70">
-              Plaas Gedrag is not a factory. It is a farmer, a drying room, and
-              a stubborn belief that biltong should taste of the animal and the
-              air it dried in. Nothing else.
+              Plaas Gedrag is not a factory. It is a farmer, a drying room and a
+              stubborn conviction that biltong should taste of the animal it
+              came from and the air it dried in.
             </p>
           </Reveal>
         </div>
@@ -63,15 +63,15 @@ export default function StoryPage() {
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="max-w-3xl font-display text-4xl font-light leading-tight text-bone md:text-6xl">
-              Hung by hand.{" "}
-              <span className="italic text-ember">Dried by the veld air.</span>
+              Hung by hand,{" "}
+              <span className="italic text-ember">dried by the veld air.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-bone/70">
               Every cut and every coil hangs in our Waterberg drying room until
-              the air does its work. No tumblers, no accelerants, just airflow
-              and time, exactly as it should be.
+              the air has done its work, with no tumblers and no accelerants,
+              only steady airflow and time.
             </p>
           </Reveal>
 

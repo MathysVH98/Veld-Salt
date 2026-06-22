@@ -88,8 +88,8 @@ export default function StoryParallax() {
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="font-display text-4xl font-light leading-tight text-bone md:text-6xl">
-              One farm. One herd.{" "}
-              <span className="italic text-ember">One honest cut.</span>
+              Raised on one farm,{" "}
+              <span className="italic text-ember">cured by hand.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -102,8 +102,9 @@ export default function StoryParallax() {
           </Reveal>
           <Reveal delay={0.15}>
             <p className="mt-5 text-lg leading-relaxed text-bone/70">
-              No tumblers. No accelerants. No mystery powders. Just coriander,
-              rock salt, a splash of vinegar and two weeks of patience.
+              There are no tumblers, no accelerants and no mystery powders here,
+              only coriander, rock salt, a splash of vinegar and the better part
+              of two weeks spent waiting.
             </p>
           </Reveal>
           <Reveal delay={0.2}>
